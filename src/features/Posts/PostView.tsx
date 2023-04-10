@@ -5,6 +5,7 @@ import SinglePost from './SinglePost';
 import { showPosts } from './PostSlice';
 // import callApi from '../../utils/axios/useAPI';
 import postReducer from './PostSlice';
+import callApi from '../../utils/axios/useAPI';
 
 
 const PostView = () => {
@@ -26,9 +27,10 @@ const PostView = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:3333/posts')
-            const data = await response.json();
-            dispatch(showPosts(data))
+            const response = await callApi('posts', 'get')
+            // const data = await response.json();
+            console.log(response);
+            dispatch(showPosts(response))
         }
         fetchData()
     }, [])

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { addPosts, showPosts } from './PostSlice';
+import callApi from '../../utils/axios/useAPI';
 
 
 const AddPost = () => {
@@ -9,13 +10,22 @@ const AddPost = () => {
     const dispatch = useDispatch();
 
 
-    // const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const addPost = await callApi('posts', 'post', { user_id: 10, post_text: newPosts, disabled: false })
+
+        const response = await callApi('posts')
+        // const data = await response.json();
+        dispatch(showPosts(response))
+        setNewPosts('');
+    }
+
+
+    // const handleSubmit = async (e) => {
     //     e.preventDefault();
 
-    //     // const post = { id: uuidv4(), postText: newPosts, comments: [], likeCount: 0, disabled: false };
-    //     // dispatch(addPosts(post));
-    //     // setNewPosts('');
-    //     fetch('http://localhost:3333/posts', {
+    //     const addPost = await fetch('http://localhost:3333/posts', {
     //         method: "POST",
     //         headers: { 'Content-type': 'application/json; charset=UTF-8' },
     //         body: JSON.stringify({
@@ -25,30 +35,12 @@ const AddPost = () => {
     //             // like_count: 20,
     //         }),
     //     })
-    //         .then((res) => res.json())
-    //         .then((json) => console.log(json));
+
+    //     const response = await fetch('http://localhost:3333/posts')
+    //     const data = await response.json();
+    //     dispatch(showPosts(data))
+    //     setNewPosts('');
     // }
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const addPost = await fetch('http://localhost:3333/posts', {
-            method: "POST",
-            headers: { 'Content-type': 'application/json; charset=UTF-8' },
-            body: JSON.stringify({
-                user_id: 10,
-                post_text: newPosts,
-                disabled: false,
-                // like_count: 20,
-            }),
-        })
-
-        const response = await fetch('http://localhost:3333/posts')
-        const data = await response.json();
-        dispatch(showPosts(data))
-        setNewPosts('');
-    }
 
 
 

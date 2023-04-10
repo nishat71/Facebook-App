@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux';
 import { deletePosts, showPosts, updatePosts } from './PostSlice';
+import callApi from '../../utils/axios/useAPI';
 
 const EditPost = (props) => {
     const { id, post_text } = props.post
@@ -48,7 +49,6 @@ const EditPost = (props) => {
 
 
 
-
     const handleDeletePost = async (id) => {
         if (window.confirm('Are you sure that you want to delete??')) {
             // dispatch(deletePosts(id));
@@ -59,13 +59,18 @@ const EditPost = (props) => {
             const response = await fetch('http://localhost:3333/posts')
             const data = await response.json();
             dispatch(showPosts(data))
-
-            // Swal.fire(
-            //     'You clicked the button!',
-            //     'Successfully Deleted!'
-            // )
         }
     }
+
+    // const handleDeletePost = async (id) => {
+    //     if (window.confirm('Are you sure that you want to delete??')) {
+    //         const deletePost = await callApi(`posts/${id}`, 'post')
+
+    //         const response = await callApi('posts')
+    //         dispatch(showPosts(response));
+    //     }
+    // }
+
 
 
     return (

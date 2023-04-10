@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Login.css'
 
 const Login = () => {
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
     const [checkedIsLogin, setCheckedIsLogin,] = useState('');
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -23,10 +23,10 @@ const Login = () => {
         console.log(email);
         console.log(password);
 
-        // isLogin ? processToLogin(email, password) : processToRegister(email, password);
+       
 
 
-        const userInfo = await fetch('http://localhost:3333/user', {
+        const userInfo = await fetch('http://localhost:3333/login', {
             method: "POST",
             headers: { 'Content-type': 'application/json; charset=UTF-8' },
             body: JSON.stringify({
@@ -67,7 +67,7 @@ const Login = () => {
                 </h2>
                 <div className="">
                     {
-                        isLogin && (
+                        !isLogin && (
                             <input className="login_input fw-bold" type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                         )
                     }
