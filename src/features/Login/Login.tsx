@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css'
+import callApi from '../../utils/axios/useAPI';
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -8,8 +9,6 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-
-
 
 
 
@@ -23,10 +22,21 @@ const Login = () => {
         console.log(email);
         console.log(password);
 
-       
+
+        // isLogin
+        // ? processToLogin(email, password)
+        // : processToRegister(email, password);
 
 
-        const userInfo = await fetch('http://localhost:3333/login', {
+        // const userInfo = await callApi('login', 'post', {
+        //     name: name,
+        //     email: email,
+        //     password: password,
+        // })
+        // const response = await callApi('posts')
+
+
+        const userInfo = await fetch('http://localhost:3333/user', {
             method: "POST",
             headers: { 'Content-type': 'application/json; charset=UTF-8' },
             body: JSON.stringify({
@@ -35,6 +45,8 @@ const Login = () => {
                 password: password,
             }),
         })
+
+
         setName('');
         setEmail('');
         setPassword('');
@@ -42,9 +54,9 @@ const Login = () => {
 
 
 
-    
-    const handleEmailLogin = () => {
-        
+
+    const processToLogin = () => {
+
     }
 
 
@@ -53,7 +65,6 @@ const Login = () => {
         if (password.length > 6 && validEmail.test(email)) {
             setIsLoading(true);
 
-        
         }
     }
 
@@ -81,7 +92,7 @@ const Login = () => {
                     <div className="text-center">
                         <div className="buttons text-center">
                             {isLogin ? (
-                                <button type="submit" className="btn__regular rounded-2" onClick={handleEmailLogin}>
+                                <button type="submit" className="btn__regular rounded-2" onClick={processToLogin}>
                                     Login
                                 </button>
                             ) : (
