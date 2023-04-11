@@ -14,9 +14,7 @@ const AddPost = () => {
         e.preventDefault();
 
         const addPost = await callApi('posts', 'post', { user_id: 10, post_text: newPosts, disabled: false })
-
         const response = await callApi('posts','get')
-        // const data = await response.json();
         dispatch(showPosts(response))
         setNewPosts('');
     }

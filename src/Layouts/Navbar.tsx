@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Link, NavLink} from "react-router-dom";
 
 
 const NavBar = () => {
-//   const [navbar, setNavbar] = useState(false)
   return (
 
     <div className='sticky-top py-2 nav-area'>
