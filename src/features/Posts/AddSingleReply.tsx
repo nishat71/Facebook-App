@@ -4,6 +4,7 @@ import { faPaperPlane, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-ic
 import { useDispatch } from 'react-redux';
 import { addReply } from './PostSlice';
 import { v4 as uuidv4 } from 'uuid';
+import callApi from '../../utils/axios/useAPI';
 
 const AddSingleReply = (props) => {
     console.log(props);
@@ -18,20 +19,11 @@ const AddSingleReply = (props) => {
         // const replyInfo = { replyId:uuidv4(), replyText: SingleReply }
         // dispatch(addReply(replyInfo));
         // setSingleReply("");
+        callApi('replies', 'post', { reply_text: SingleReply })
 
-        fetch('http://localhost:3333/replies', {
-            method: 'POST',
-            body: JSON.stringify({
-                // comment_id: commentId,
-                reply_text: SingleReply
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
             .then((response) => response.json())
             .then((json) => console.log(json));
-            setSingleReply("")
+        setSingleReply("")
     }
 
     return (

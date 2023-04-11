@@ -5,6 +5,7 @@ import EditPost from './EditPost';
 import Comments from './Comments';
 import { useDispatch } from 'react-redux';
 import { likeCountIncrement, likeCountDecrement } from './PostSlice.js';
+import callApi from '../../utils/axios/useAPI';
 
 
 
@@ -22,65 +23,37 @@ const SinglePost = ({ post }) => {
 
 
     const handleLikeCount = (id) => {
-
-        // fetch('http://localhost:3333/likes')
-        //     .then((response) => response.json())
-        //     // .then((json) => console.log(json));
-        //     .then((json) => setLikes(json));
-
-
         if (likes.length > 0) {
             if (isDisabled == 0) {
                 setLike(like + 1)
                 setIsDisabled(isDisabled + 1)
+                callApi(`likes/${id}`, 'post', { total_like: like + 1 })
 
-                fetch(`http://localhost:3333/likes/${id}`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-                    body: JSON.stringify({
-                        post_id: id,
-                        total_like: like + 1
-                    }),
-                })
+                // fetch(`http://localhost:3333/likes/${id}`, {
+                //     method: 'POST',
+                //     headers: { 'Content-type': 'application/json; charset=UTF-8', },
+                //     body: JSON.stringify({
+                //         post_id: id,
+                //         total_like: like + 1
+                //     }),
+                // })
             }
             else {
                 setLike(like - 1)
                 setIsDisabled(isDisabled - 1)
-                fetch(`http://localhost:3333/likes/${id}`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-                    body: JSON.stringify({
-                        post_id: id,
-                        total_like: like - 1
-                    }),
-                })
+                callApi(`likes/${id}`, 'post', { total_like: like - 1 })
             }
         }
         else if (likes.length == 0) {
             if (isDisabled == 0) {
                 setLike(like + 1)
                 setIsDisabled(isDisabled + 1)
-
-                fetch('http://localhost:3333/likes', {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-                    body: JSON.stringify({
-                        post_id: id,
-                        total_like: like + 1
-                    }),
-                })
+                callApi(`likes/${id}`, 'post', { total_like: like + 1 })
             }
             else {
                 setLike(like - 1)
                 setIsDisabled(isDisabled - 1)
-                fetch(`http://localhost:3333/likes/${id}`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-                    body: JSON.stringify({
-                        post_id: id,
-                        total_like: like - 1
-                    }),
-                })
+                callApi(`likes/${id}`, 'post', { total_like: like - 1 })
             }
         }
 
@@ -108,28 +81,6 @@ const SinglePost = ({ post }) => {
                         <p>{like}</p>
                     </div>
                 }
-
-                {/* <div className='like_count'>
-                    <span className='like_icon_btn' >
-                        <FontAwesomeIcon className='like_icon' icon={faThumbsUp} />
-                    </span>
-                    <p>10</p>
-                    {
-                        likes && likes.map((like) => {
-                            console.log(like);
-                            const { id, like_count, post_id, profile_id } = like;
-                            console.log(like_count);
-
-                            return (
-                                <div key={like.id}>
-                                    <p>{like_count}</p>
-                                </div>
-                            )
-
-                        })
-                    }
-                </div> */}
-
                 <div className='single_post_btm'>
                     <button className='like_btn' onClick={() => handleLikeCount(id)} style={disabled ? { color: '#1677ff' } : { color: '#67656B' }}>
                         <span className='icon-btn'>

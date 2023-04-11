@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import './Login.css'
 import callApi from '../../utils/axios/useAPI';
+import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const [isLogin, setIsLogin] = useState(true);
-    const [checkedIsLogin, setCheckedIsLogin,] = useState('');
+    const [isLogin, setIsLogin] = useState(false);
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
 
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
 
     const handleLogin = () => {
@@ -23,49 +26,42 @@ const Login = () => {
         console.log(password);
 
 
-        // isLogin
-        // ? processToLogin(email, password)
-        // : processToRegister(email, password);
-
-
-        // const userInfo = await callApi('login', 'post', {
-        //     name: name,
-        //     email: email,
-        //     password: password,
-        // })
-        // const response = await callApi('posts')
-
-
-        const userInfo = await fetch('http://localhost:3333/user', {
-            method: "POST",
-            headers: { 'Content-type': 'application/json; charset=UTF-8' },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
-            }),
-        })
-
+        { isLogin ? processToLogin() : processToRegister() }
 
         setName('');
         setEmail('');
         setPassword('');
-    }
-
-
-
-
-    const processToLogin = () => {
 
     }
 
 
-    const processToRegister = () => {
-        let validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (password.length > 6 && validEmail.test(email)) {
-            setIsLoading(true);
 
+
+    const processToLogin = async () => {
+        const userLogin = await callApi("login", "post", { email: email, password: password })
+        if (userLogin) {
+            message.success('logged in');
+            navigate('/home');
         }
+        else {
+            message.error('You must be Register first to Login')
+            navigate('/');
+        }
+    }
+
+
+    const processToRegister = async () => {
+        // setIsLoading(true);
+
+        const userInfo = await callApi('users', 'post', { name: name, email: email, password: password })
+        console.log(userInfo)
+
+
+
+        // let validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // if (password.length > 6 && validEmail.test(email)) {
+
+        // }
     }
 
 
@@ -83,7 +79,7 @@ const Login = () => {
                         )
                     }
                     <input className="login_input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <input className="login_input" type="password" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input className="login_input" type="password" placeholder="*******" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <div className='check_field'>
                         <input type="checkbox" id="registered" value="registered" onChange={handleLogin} />
                         <label className="registered-link" htmlFor="registered"> Already Registered ?</label>
@@ -92,11 +88,11 @@ const Login = () => {
                     <div className="text-center">
                         <div className="buttons text-center">
                             {isLogin ? (
-                                <button type="submit" className="btn__regular rounded-2" onClick={processToLogin}>
+                                <button type="submit" className="btn__regular rounded-2">
                                     Login
                                 </button>
                             ) : (
-                                <button type="submit" className="btn__regular rounded-2" onClick={processToRegister}>
+                                <button type="submit" className="btn__regular rounded-2">
                                     Register
                                 </button>
                             )}

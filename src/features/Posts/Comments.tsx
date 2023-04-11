@@ -3,6 +3,7 @@ import SingleComment from './SingleComment';
 import { useDispatch } from 'react-redux';
 import { addComment, showPosts } from './PostSlice';
 import { v4 as uuidv4 } from 'uuid';
+import callApi from '../../utils/axios/useAPI';
 
 
 const Comments = (props) => {
@@ -11,7 +12,6 @@ const Comments = (props) => {
 
 
     // const [comment, setComment] = useState("");
-    // const [comments, setComments] = useState<any | null>(null);
     const [comments, setComments] = useState('');
     const dispatch = useDispatch()
     const isCommentTextDisabled = comments.length === 0;
@@ -20,27 +20,14 @@ const Comments = (props) => {
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-        // const commentDetails = { commentId: uuidv4(), postId: postId, commentText: comments }
-        // dispatch(addComment(commentDetails));
-        // setComments("");
-        const commentPost = await fetch('http://localhost:3333/comments', {
-            method: 'POST',
-            body: JSON.stringify({
-                post_id: postId,
-                comment_text: comments
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
 
-        const response = await fetch('http://localhost:3333/posts')
-        const data = await response.json();
-        dispatch(showPosts(data))
+        const commentPost = await callApi('comments', 'post', { post_id: postId, comment_text: comments })
+        const response = await callApi('posts', 'get')
+        dispatch(showPosts(response))
         setComments('');
     }
 
-    
+
     return (
         <div>
             <div className='comment_section'>

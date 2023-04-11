@@ -3,15 +3,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SinglePost from './SinglePost';
 import { showPosts } from './PostSlice';
-// import callApi from '../../utils/axios/useAPI';
-import postReducer from './PostSlice';
 import callApi from '../../utils/axios/useAPI';
 
 
 const PostView = () => {
     //@ts-ignore
     const posts: any = useSelector((state) => state.postReducer.posts)
-    // const posts = useSelector((state) => console.log(state));
     console.log(posts);
     const dispatch = useDispatch();
 
@@ -28,7 +25,6 @@ const PostView = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await callApi('posts', 'get')
-            // const data = await response.json();
             console.log(response);
             dispatch(showPosts(response))
         }

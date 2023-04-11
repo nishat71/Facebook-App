@@ -13,7 +13,6 @@ const EditPost = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editPost, setEditPost] = useState(post_text);
     const dispatch = useDispatch();
-    // const [isDeleted, setIsDeleted] = useState('false');
 
 
     const showModal = () => {
@@ -23,23 +22,12 @@ const EditPost = (props) => {
 
     const handleOk = async (e) => {
         e.preventDefault();
-        // dispatch(updatePosts({ id, postText: editPost }));
 
-        const postEdit = await fetch(`http://localhost:3333/posts/${id}`, {
-            method: 'POST',
-            body: JSON.stringify({
-                post_text: editPost,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-
-
-        const response = await fetch('http://localhost:3333/posts')
-        const data = await response.json();
-        dispatch(showPosts(data))
+        const postEdit = await callApi(`posts/${id}`,'post', {post_text: editPost})
+        const response = await callApi('posts','get')
+        dispatch(showPosts(response))
         setIsModalOpen(false);
+
     };
 
 
@@ -49,27 +37,27 @@ const EditPost = (props) => {
 
 
 
-    const handleDeletePost = async (id) => {
-        if (window.confirm('Are you sure that you want to delete??')) {
-            // dispatch(deletePosts(id));
-            const deletePost = await fetch(`http://localhost:3333/posts/${id}`, {
-                method: 'DELETE',
-            })
-
-            const response = await fetch('http://localhost:3333/posts')
-            const data = await response.json();
-            dispatch(showPosts(data))
-        }
-    }
-
     // const handleDeletePost = async (id) => {
     //     if (window.confirm('Are you sure that you want to delete??')) {
-    //         const deletePost = await callApi(`posts/${id}`, 'post')
+    //         // dispatch(deletePosts(id));
+    //         const deletePost = await fetch(`http://localhost:3333/posts/${id}`, {
+    //             method: 'DELETE',
+    //         })
 
-    //         const response = await callApi('posts')
-    //         dispatch(showPosts(response));
+    //         const response = await fetch('http://localhost:3333/posts')
+    //         const data = await response.json();
+    //         dispatch(showPosts(data))
     //     }
     // }
+
+    const handleDeletePost = async (id) => {
+        if (window.confirm('Are you sure that you want to delete??')) {
+            const deletePost = await callApi(`postsDestroy/${id}`, 'post')
+
+            const response = await callApi('posts','get')
+            dispatch(showPosts(response));
+        }
+    }
 
 
 
