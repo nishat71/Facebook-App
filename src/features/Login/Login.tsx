@@ -25,7 +25,6 @@ const Login = () => {
         console.log(email);
         console.log(password);
 
-
         { isLogin ? processToLogin() : processToRegister() }
 
         setName('');
@@ -33,8 +32,6 @@ const Login = () => {
         setPassword('');
 
     }
-
-
 
 
     const processToLogin = async () => {
@@ -55,7 +52,6 @@ const Login = () => {
 
         const userInfo = await callApi('users', 'post', { name: name, email: email, password: password })
         console.log(userInfo)
-
 
 
         // let validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
